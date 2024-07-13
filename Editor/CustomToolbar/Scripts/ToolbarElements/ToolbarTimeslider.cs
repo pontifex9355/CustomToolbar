@@ -1,26 +1,35 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
+using UnityToolbarExtender;
 
 [Serializable]
-internal class ToolbarTimeslider : BaseToolbarElement {
-	[SerializeField] float minTime = 1;
-	[SerializeField] float maxTime = 120;
+internal class ToolbarTimeslider : BaseToolbarElement
+{
+	private static GUIContent resetBtn;
+
+	[SerializeField]
+	private float minTime = 1;
+
+	[SerializeField]
+	private float maxTime = 120;
 
 	public override string NameInList => "[Slider] Timescale";
 
-	public override void Init() {
-
-	}
-
-	public ToolbarTimeslider(float minTime = 0.0f, float maxTime = 10.0f) : base(200) {
+	public ToolbarTimeslider(float minTime = 0.0f, float maxTime = 10.0f) : base(200)
+	{
 		this.minTime = minTime;
 		this.maxTime = maxTime;
 	}
 
-	protected override void OnDrawInList(Rect position) {
+	public override void Init()
+	{
+		resetBtn = EditorGUIUtility.IconContent("Refresh");
+		resetBtn.tooltip = "Reset Timescale";
+	}
+
+	protected override void OnDrawInList(Rect position)
+	{
 		position.width = 70.0f;
 		EditorGUI.LabelField(position, "Min Time");
 
@@ -37,8 +46,17 @@ internal class ToolbarTimeslider : BaseToolbarElement {
 		maxTime = EditorGUI.FloatField(position, "", maxTime);
 	}
 
-	protected override void OnDrawInToolbar() {
+	protected override void OnDrawInToolbar()
+	{
 		EditorGUILayout.LabelField("Time", GUILayout.Width(30));
-		Time.timeScale = EditorGUILayout.Slider("", Time.timeScale, minTime, maxTime, GUILayout.Width(WidthInToolbar - 30.0f));
+
+		var timescale = Time.timeScale;
+		if (GUILayout.Button(resetBtn, ToolbarStyles.commandButtonStyle))
+		{
+			timescale = 1;
+			Debug.Log("Reset Timescale to 1");
+		}
+
+		Time.timeScale = EditorGUILayout.Slider("", timescale, minTime, maxTime, GUILayout.Width(WidthInToolbar - 30.0f));
 	}
 }
