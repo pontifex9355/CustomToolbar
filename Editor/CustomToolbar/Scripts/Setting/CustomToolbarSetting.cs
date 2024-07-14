@@ -31,6 +31,7 @@ namespace UnityToolbarExtender
             new ToolbarRecompile(),
             new ToolbarReserializeSelected(),
             new ToolbarReserializeAll(),
+			new ToolbarPingObject(),
         };
 
         internal List<BaseToolbarElement> elements => _elements;
