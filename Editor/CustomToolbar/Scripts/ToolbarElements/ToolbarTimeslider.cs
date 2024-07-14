@@ -15,6 +15,7 @@ internal class ToolbarTimeslider : BaseToolbarElement
 	private float maxTime = 120;
 
 	public override string NameInList => "[Slider] Timescale";
+	public override int SortingGroup => 1;
 
 	public ToolbarTimeslider(float minTime = 0.0f, float maxTime = 10.0f) : base(200)
 	{
